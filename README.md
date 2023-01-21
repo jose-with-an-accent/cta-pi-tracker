@@ -1,7 +1,4 @@
-# Tauri + React + Typescript
+# CTA Pi Tracker
+This project intends to be a tool to check the timetables of CTA buses, with possible additional uses in the future. It's made with a class in mind about how to use Raspberry Pis.
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+The project uses Whisper for voice control. The UI is built with React and for simplicity comes with a Python backend that communicates via WebSockets. It's all wrapped into Tauri for something that will, in the future, be unified.

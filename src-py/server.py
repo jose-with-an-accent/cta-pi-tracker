@@ -4,6 +4,13 @@ import json
 import whisper
 import pyaudio
 
+routes_to_watch = {
+
+}
+user_settings = {
+    "name": ""
+}
+
 model = whisper.load_model("tiny")
 p = pyaudio.PyAudio() 
 
@@ -21,6 +28,8 @@ async def echo(websocket):
             case "MICROPHONE_STOP_REQUESTED":
                 await websocket.send(stop_listening())
                 pass
+            case "PING":
+                await websocket.send("PONG")
             case "REFRESH_REQUESTED":
                 await websocket.send(refresh_data())
                 pass
