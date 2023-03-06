@@ -2,7 +2,7 @@ import asyncio
 import websockets
 import json
 import csv
-
+import pvporcupine
 d = {}
 
 with open('stops.csv', mode='r') as f:
@@ -23,6 +23,12 @@ rhino = pvrhino.create(
    access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A==',
    context_path='rp_MAC.rhn'
 )
+
+porcupine = pvporcupine.create(
+  access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A',
+  keyword_paths=['ok_google_mac.ppn']
+)
+
 recorder=PvRecorder(device_index=-1, frame_length=512)
 
 
@@ -37,40 +43,20 @@ user_settings = {
 
 async def echo(websocket):
     async for message in websocket:
-        print(message)
         item = json.loads(message)
         action = item["action"]
-
-        print(item["action"])
         match action:
             case "MICROPHONE_REQUESTED":
-                m = start_listening()
-
-                station = d[m]
-
-                await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
-                pass
-            case "MICROPHONE_STOP_REQUESTED":
-                await websocket.send(stop_listening())
-                pass
-            case "PING":
-                await websocket.send("PONG")
-            case "REFRESH_REQUESTED":
-                await websocket.send(refresh_data())
-                pass
-            case "SETTINGS_UPDATE_REQUESTED":
-                pass
-            case _:
-                print("No action matched pattern")
-
-
-
-        await websocket.send(message)
-
+                m = await start_listening(websocket)
+                try:
+                    station = d[m]
+                    await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
+                except KeyError:
+                    await websocket.send(json.dumps({"error": "Could not get the stop"}))
 async def main():
     async with websockets.serve(echo, "localhost", 8765):
         await asyncio.Future()  # run forever
-def start_listening():
+async def start_listening(websocket):
     try:
         recorder.start()
 
@@ -91,9 +77,9 @@ def start_listening():
                     return inference.slots.get("train")
 
                 else:
-                    print("Didn't understand the command.\n")
+                    await websocket.send(json.dumps({"error": "didn't understand the command"}))
     except:
-        print("uwu")
+        await websocket.send(json.dumps({"error": "could not initialize recording"}))
     # stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
     # data = stream.read(1024)
 
