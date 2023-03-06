@@ -41,3 +41,13 @@ th{
   justify-content: space-between;
 
 }
+.newsView {
+  display: flex;
+  flex-direction: column;
+}
+.newsCard {
+  min-width: 400px;
+  /* border: solid gray 2px; */
+  margin: .1rem auto;
+  padding: .3em;
+}

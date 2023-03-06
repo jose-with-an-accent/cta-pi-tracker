@@ -5,6 +5,7 @@ export default function BottomNavigation() {
                 <li>A: Return to Homepage</li>
                 <li>B / "Hey Selene": Speak</li>
                 <li>C: Settings</li>
+                <li><em>Number</em>: Expand section</li>
             </ul>
         </div>
     )

@@ -1,7 +1,8 @@
 import asyncio
 import websockets
-import json
 import whisper
+import json
+# import whisper
 import pyaudio
 
 routes_to_watch = {
@@ -23,7 +24,7 @@ async def echo(websocket):
         print(item["action"])
         match action:
             case "MICROPHONE_REQUESTED":
-                start_listening()
+                await start_listening()
                 pass
             case "MICROPHONE_STOP_REQUESTED":
                 await websocket.send(stop_listening())
@@ -52,7 +53,7 @@ async def start_listening():
     stream.stop_stream()
     stream.close()
     p.terminate()
-
+    
     result = model.transcribe(data)
     print(result)
     return "uwu"

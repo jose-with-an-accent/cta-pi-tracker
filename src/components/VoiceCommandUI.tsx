@@ -8,7 +8,7 @@ export default function VoiceCommandUI() {
         <p>Examples:</p>
         <ul>
             <li>Show me trains in the Blue Line.</li>
-            <li>Show me the next trains for the Orange Line.</li>
+            <li>When's the next train towards the loop going to be?</li>
         </ul>
         </>
     )
