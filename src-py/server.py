@@ -1,9 +1,31 @@
 import asyncio
 import websockets
-import whisper
 import json
+import csv
+
+d = {}
+
+with open('stops.csv', mode='r') as f:
+    data = csv.reader(f)
+    d = {rows[3]:rows[5] for rows in data}
+
 # import whisper
-import pyaudio
+# import pyaudio
+# import speech_recognition as sr
+import pvrhino
+from pvrecorder import PvRecorder
+
+
+
+devices = PvRecorder.get_audio_devices()
+print(devices)
+rhino = pvrhino.create(
+   access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A==',
+   context_path='rp_MAC.rhn'
+)
+recorder=PvRecorder(device_index=-1, frame_length=512)
+
+
 
 routes_to_watch = {
 
@@ -12,8 +34,6 @@ user_settings = {
     "name": ""
 }
 
-model = whisper.load_model("tiny")
-p = pyaudio.PyAudio() 
 
 async def echo(websocket):
     async for message in websocket:
@@ -24,7 +44,11 @@ async def echo(websocket):
         print(item["action"])
         match action:
             case "MICROPHONE_REQUESTED":
-                await start_listening()
+                m = start_listening()
+
+                station = d[m]
+
+                await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
                 pass
             case "MICROPHONE_STOP_REQUESTED":
                 await websocket.send(stop_listening())
@@ -36,26 +60,48 @@ async def echo(websocket):
                 pass
             case "SETTINGS_UPDATE_REQUESTED":
                 pass
-            case _: 
+            case _:
                 print("No action matched pattern")
 
 
-        
+
         await websocket.send(message)
 
 async def main():
     async with websockets.serve(echo, "localhost", 8765):
         await asyncio.Future()  # run forever
-async def start_listening():
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
-    data = stream.read(1024)
+def start_listening():
+    try:
+        recorder.start()
 
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-    
-    result = model.transcribe(data)
-    print(result)
+        print(rhino.context_info)
+
+        print("Using device: %s" % recorder.selected_device)
+        print("Listening...")
+
+        while True:
+            pcm=recorder.read()
+            is_finalized=rhino.process(pcm)
+            if is_finalized:
+                inference=rhino.get_inference()
+                if inference.is_understood:
+                    print('{')
+                    print("  intent : '%s'" % inference.intent)
+                    recorder.stop()
+                    return inference.slots.get("train")
+
+                else:
+                    print("Didn't understand the command.\n")
+    except:
+        print("uwu")
+    # stream = p.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
+    # data = stream.read(1024)
+
+    # stream.stop_stream()
+    # stream.close()
+    # p.terminate()
+
+    # print(result)
     return "uwu"
 async def stop_listening():
     pass
