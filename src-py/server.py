@@ -42,8 +42,6 @@ async def echo(websocket):
         elif(action == "NAVIGATE_TO_SPEAK"):
             print("Broadcasting message...")
             await broadcast(json.dumps({"action": "NAVIGATE_TO_SPEAK"}))
-        if (action == "GET_PREFERENCES"):
-            await broadcast(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location, "user_name": user_name}))
         elif (action == "UPDATE_PREFERENCES"):
             mapid = item["mapid"]
             user_name = item["user_name"]
