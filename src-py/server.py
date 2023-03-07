@@ -28,22 +28,21 @@ async def echo(websocket):
     async for message in websocket:
         item = json.loads(message)
         action = item["action"]
-        match action:
-            case "GET_PREFERENCES":
-                await websocket.send(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location}))
+        if (action == "GET_PREFERENCES"):
+            await websocket.send(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location}))
 
-            case "UPDATE_PREFERENCES":
-                mapid = item["mapid"]
-                home_location=int(mapid)
-            case "MICROPHONE_REQUESTED":
-                m = await start_listening(websocket)
+        elif (action =="UPDATE_PREFERENCES"):
+            mapid = item["mapid"]
+            home_location=int(mapid)
+        elif "MICROPHONE_REQUESTED":
+            m = await start_listening(websocket)
                 # await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": 40440}))
                 
-                try:
-                    station = d[m]
-                    await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
-                except KeyError:
-                    await websocket.send(json.dumps({"error": "Could not get the stop"}))
+            try:
+                station = d[m]
+                await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
+            except KeyError:
+                await websocket.send(json.dumps({"error": "Could not get the stop"}))
 async def main():
     home_location = 41220
     async with websockets.serve(echo, "localhost", 8765):
