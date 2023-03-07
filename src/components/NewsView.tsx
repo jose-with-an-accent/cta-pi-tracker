@@ -13,7 +13,7 @@ export default function NewsView() {
         setNews(res.articles);
     }
     useEffect(() => {
-        getNews().then(() => {})
+        getNews()
     }, [])
     return(
         <>

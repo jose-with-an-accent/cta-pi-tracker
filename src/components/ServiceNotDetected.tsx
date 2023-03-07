@@ -1,6 +1,12 @@
+import { useEffect } from "react"
 import SpeakIndicator from "./SpeakIndicator"
 
 export default function ServiceNotDetected() {
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         location.reload();
+    //     }, 6000)
+    // })
     return(
         <div className="container">
             <SpeakIndicator />

@@ -100,3 +100,8 @@ button {
     background-color: #0f0f0f98;
   }
 }
+
+h2 {
+  margin-top: .3em;
+  margin-bottom: .3em;
+}

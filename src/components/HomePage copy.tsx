@@ -1,12 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import NewsView from "./NewsView";
 import Timetable from "./Timetable";
 import { TimetableRowProps } from "./TimetableRow";
-
-export default function HomePage({favorites, lastJsonMessage, sendJsonMessage, name}) {
+export default function HomePage({favorites}: Array<number>) {
     return(<div id="container">
-        <h1>Hello {name}</h1>
+        <h1>Hello Jose.</h1>
         <NewsView />
         <Timetable favorites={favorites} />
     </div>)
