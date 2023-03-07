@@ -24,10 +24,10 @@ rhino = pvrhino.create(
    context_path='rp_MAC.rhn'
 )
 
-porcupine = pvporcupine.create(
-  access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A',
-  keyword_paths=['ok_google_mac.ppn']
-)
+# porcupine = pvporcupine.create(
+#   access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A',
+#   keyword_paths=['ok_google_mac.ppn']
+# )
 
 recorder=PvRecorder(device_index=-1, frame_length=512)
 
