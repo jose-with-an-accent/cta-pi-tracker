@@ -33,9 +33,7 @@ recorder=PvRecorder(device_index=-1, frame_length=512)
 
 
 
-routes_to_watch = {
-
-}
+home_location = 41220
 user_settings = {
     "name": ""
 }
