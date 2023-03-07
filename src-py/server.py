@@ -1,18 +1,15 @@
 import asyncio
 import websockets
 import json
+import pvrhino
 import csv
-import pvporcupine
 d = {}
+home_location = 41220
 
 with open('stops.csv', mode='r') as f:
     data = csv.reader(f)
     d = {rows[3]:rows[5] for rows in data}
 
-# import whisper
-# import pyaudio
-# import speech_recognition as sr
-import pvrhino
 from pvrecorder import PvRecorder
 
 
@@ -24,19 +21,7 @@ rhino = pvrhino.create(
    context_path='rp_MAC.rhn'
 )
 
-# porcupine = pvporcupine.create(
-#   access_key='thuR68yJAqz8beFLtVRkBy1SnvXwznt5tHCP0kwKdUMBM2AUMgib4A',
-#   keyword_paths=['ok_google_mac.ppn']
-# )
-
 recorder=PvRecorder(device_index=-1, frame_length=512)
-
-
-
-home_location = 41220
-user_settings = {
-    "name": ""
-}
 
 
 async def echo(websocket):
@@ -44,6 +29,12 @@ async def echo(websocket):
         item = json.loads(message)
         action = item["action"]
         match action:
+            case "GET_PREFERENCES":
+                await websocket.send(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location}))
+
+            case "UPDATE_PREFERENCES":
+                mapid = item["mapid"]
+                home_location=int(mapid)
             case "MICROPHONE_REQUESTED":
                 m = await start_listening(websocket)
                 # await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": 40440}))
@@ -54,6 +45,7 @@ async def echo(websocket):
                 except KeyError:
                     await websocket.send(json.dumps({"error": "Could not get the stop"}))
 async def main():
+    home_location = 41220
     async with websockets.serve(echo, "localhost", 8765):
         await asyncio.Future()  # run forever
 async def start_listening(websocket):

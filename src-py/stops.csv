@@ -61,7 +61,7 @@ STOP_ID,DIRECTION_ID,STOP_NAME,STATION_NAME,STATION_DESCRIPTIVE_NAME,MAP_ID,ADA,
 30021,S,Morse (95th-bound),Morse,Morse (Red Line),40100,false,true,false,false,false,false,false,false,false,false,"(42.008362, -87.665909)"
 30060,N,Western (Loop-bound),Western,Western (Orange Line),40310,true,false,false,false,false,false,false,false,false,true,"(41.804546, -87.684019)"
 30096,S,Grand/Milwaukee (Forest Pk-bound),Grand,Grand (Blue Line),40490,false,false,true,false,false,false,false,false,false,false,"(41.891189, -87.647578)"
-30375,N,Clark/Lake (O'Hare-bound),Clark/Lake,"Clark/Lake (Blue, Brown, Green, Orange, Purple & Pink lines)",40380,true,false,true,false,false,false,false,false,false,false,"(41.885737, -87.630886)"
+30375,N,Clark/Lake (O'Hare-bound),Clark and Lake,"Clark/Lake (Blue, Brown, Green, Orange, Purple & Pink lines)",40380,true,false,true,false,false,false,false,false,false,false,"(41.885737, -87.630886)"
 30095,N,Grand/Milwaukee (O'Hare-bound),Grand,Grand (Blue Line),40490,false,false,true,false,false,false,false,false,false,false,"(41.891189, -87.647578)"
 30062,N,Division (O'Hare-bound),Division,Division (Blue Line),40320,false,false,true,false,false,false,false,false,false,false,"(41.903355, -87.666496)"
 30185,N,Pulaski (Loop-bound),Pulaski,Pulaski (Orange Line),40960,true,false,false,false,false,false,false,false,false,true,"(41.799756, -87.724493)"
