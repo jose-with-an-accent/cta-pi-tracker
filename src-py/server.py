@@ -36,17 +36,19 @@ async def echo(websocket):
     async for message in websocket:
         item = json.loads(message)
         action = item["action"]
-        if (action == "GET_PREFERENCES"):
-            await websocket.send(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location, "user_name": user_name}))
-        elif (action == "NAVIGATE_TO_HOMEPAGE"):
+        if (action == "NAVIGATE_TO_HOMEPAGE"):
             print("Broadcasting message...")
             await broadcast(json.dumps({"action": "NAVIGATE_TO_HOMEPAGE"}))
         elif(action == "NAVIGATE_TO_SPEAK"):
             print("Broadcasting message...")
             await broadcast(json.dumps({"action": "NAVIGATE_TO_SPEAK"}))
+        if (action == "GET_PREFERENCES"):
+            await broadcast(json.dumps({"action": "GET_PREFERENCES", "mapid": home_location, "user_name": user_name}))
         elif (action == "UPDATE_PREFERENCES"):
             mapid = item["mapid"]
+            user_name = item["user_name"]
             home_location = int(mapid)
+            await websocket.send(json.dumps({"result": "OK"}))
         elif (action == "PING"):
             await websocket.send({"action": "PONG"})
         elif "MICROPHONE_REQUESTED":
