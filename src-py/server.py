@@ -46,6 +46,8 @@ async def echo(websocket):
         match action:
             case "MICROPHONE_REQUESTED":
                 m = await start_listening(websocket)
+                # await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": 40440}))
+                
                 try:
                     station = d[m]
                     await websocket.send(json.dumps({"action": "FIND_STOP", "mapid": station}))
